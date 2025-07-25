@@ -17,9 +17,6 @@ Fonctionnalités principales :
 - UI/UX Material Design responsive
 
 ---
-
-## 📂 Architecture du projet
-
 <pre lang="markdown">
 ## 🗂️ Architecture du projet
 
