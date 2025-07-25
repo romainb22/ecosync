@@ -20,29 +20,7 @@ Fonctionnalités principales :
 
 ## 📂 Architecture du projet
 
-ecosync/
-│
-├── backend/ # Node.js + Express + Prisma
-│ ├── src/
-│ │ ├── controllers/
-│ │ ├── routes/
-│ │ ├── lib/
-│ │ └── ...
-│ ├── prisma/
-│ │ └── schema.prisma
-│ ├── .env
-│ └── package.json
-│
-├── frontend/ # Angular + Material + ng2-charts
-│ ├── src/
-│ │ ├── app/
-│ │ └── ...
-│ ├── angular.json
-│ └── package.json
-│
-├── docker-compose.yml # Orchestration front + back
-├── README.md # Documentation globale
-└── ...
+<pre lang="markdown"> ## 🗂️ Architecture du projet ```text ecosync/ │ ├── backend/ # Node.js + Express + Prisma │ ├── src/ │ │ ├── controllers/ │ │ ├── routes/ │ │ ├── lib/ │ │ └── ... │ ├── prisma/ │ │ └── schema.prisma │ ├── .env │ └── package.json │ ├── frontend/ # Angular + Material + ng2-charts │ ├── src/ │ │ ├── app/ │ │ └── ... │ ├── angular.json │ └── package.json │ ├── docker-compose.yml # Orchestration front + back ├── README.md # Documentation globale └── ... ``` </pre>
 
 yaml
 
