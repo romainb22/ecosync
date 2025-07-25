@@ -1,0 +1,43 @@
+<mat-card class="dashboard-welcome-card">
+  <div class="welcome-header">
+    <mat-icon color="primary" class="eco-icon">bolt</mat-icon>
+    <div>
+      <h1>Bienvenue sur EcoSync</h1>
+      <p class="welcome-lead">
+        Visualisez, analysez et pilotez vos consommations d'énergie.<br>
+        Retrouvez ici vos <b>données en temps réel</b>, <b>historique</b>, alertes et bien plus !
+      </p>
+    </div>
+  </div>
+</mat-card>
+
+<div class="quick-access">
+  <mat-card class="quick-tile" routerLink="/dashboard/consommation" routerLinkActive="active">
+    <mat-icon>bar_chart</mat-icon>
+    <div>Consommation</div>
+    <small>Voir les mesures récentes</small>
+  </mat-card>
+  <mat-card class="quick-tile" routerLink="/dashboard/historique" routerLinkActive="active">
+    <mat-icon>history</mat-icon>
+    <div>Historique</div>
+    <small>Comparer dans le temps</small>
+  </mat-card>
+  <mat-card class="quick-tile" routerLink="/dashboard/import" routerLinkActive="active">
+    <mat-icon>upload_file</mat-icon>
+    <div>Import</div>
+    <small>Ajouter de nouvelles données</small>
+  </mat-card>
+  <mat-card class="quick-tile" routerLink="/dashboard/ajouter-amis" routerLinkActive="active">
+    <mat-icon>group_add</mat-icon>
+    <div>Amis</div>
+    <small>Partager et comparer</small>
+  </mat-card>
+</div>
+
+<mat-card class="dashboard-tips">
+  <h3>🌱 Astuce éco : </h3>
+  <p>
+    Activez les notifications pour recevoir une alerte dès qu’une consommation dépasse votre seuil !
+    <br><i>Ensemble, agissons pour une énergie plus responsable.</i>
+  </p>
+</mat-card>

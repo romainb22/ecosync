@@ -1,0 +1,8 @@
+-- CreateTable
+CREATE TABLE "Measurement" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "timestamp" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "temperature" REAL NOT NULL,
+    "humidity" INTEGER NOT NULL,
+    "co2" INTEGER NOT NULL
+);

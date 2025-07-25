@@ -1,0 +1,71 @@
+<mat-drawer-container class="sidenav-container">
+
+  <!-- MENU GAUCHE -->
+  <mat-drawer mode="side" opened>
+    <mat-toolbar color="primary">EcoSync</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="active">
+        <mat-icon matListIcon>home</mat-icon> Accueil
+      </a>
+      <a mat-list-item routerLink="/dashboard/consommation" routerLinkActive="active">
+        <mat-icon matListIcon>bar_chart</mat-icon> Consommation
+      </a>
+      <a mat-list-item routerLink="/dashboard/historique" routerLinkActive="active">
+        <mat-icon matListIcon>history</mat-icon> Historique
+      </a>
+      <a mat-list-item routerLink="/dashboard/import" routerLinkActive="active">
+        <mat-icon matListIcon>upload_file</mat-icon> Import
+      </a>
+      <a mat-list-item routerLink="/dashboard/ajouter-amis" routerLinkActive="active">
+        <mat-icon matListIcon>group_add</mat-icon>
+        Amis
+        <span *ngIf="pendingRequestsCount > 0" class="badge-requests">
+          {{ pendingRequestsCount }}
+        </span>
+      </a>
+      <div class="sidebar-friends" *ngIf="friendsList.length > 0">
+        <div class="friends-title">Mes amis</div>
+        <div *ngFor="let friend of friendsList" class="friend-chat-link">
+          <span class="friend-email">{{ friend.email }}</span>
+          <a mat-list-item (click)="openChat(friend)" routerLinkActive="active">
+            <mat-icon matListIcon>chat</mat-icon>
+            Chat
+            <span *ngIf="unreadMessagesCount > 0" class="badge-messages">
+              {{ unreadMessagesCount }}
+            </span>
+          </a>
+        </div>
+      </div>
+    </mat-nav-list>
+  </mat-drawer>
+
+  <!-- CONTENU CENTRAL -->
+  <mat-drawer-content>
+    <mat-toolbar>
+      Mon tableau de bord
+      <span class="spacer"></span>
+      <button mat-button color="primary" (click)="logout()">
+        <mat-icon>logout</mat-icon> Déconnexion
+      </button>
+    </mat-toolbar>
+    <div class="dashboard-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-content>
+
+  <!-- CHAT DRAWER DROITE -->
+  <mat-drawer
+    position="end"
+    mode="over"
+    [opened]="chatOpened"
+    (closed)="closeChat()"
+    class="chat-drawer"
+  >
+    <app-chat-drawer
+      *ngIf="selectedFriend"
+      [friend]="selectedFriend"
+      (close)="closeChat()"
+    ></app-chat-drawer>
+  </mat-drawer>
+
+</mat-drawer-container>

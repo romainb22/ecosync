@@ -1,0 +1,115 @@
+:root {
+    --sidebar-width: 220px;
+}
+
+/* Container height full */
+.sidenav-container {
+    height: 100vh;
+    background: #f3f4f8; /* fond doux */
+}
+
+/* Sidenav style */
+mat-sidenav {
+    width: var(--sidebar-width);
+    background: #fff;
+    border-right: 1px solid #ececec;
+    box-shadow: 2px 0 12px #1976d107;
+}
+
+mat-sidenav mat-toolbar {
+    background: #1976d2 !important;
+    color: #fff;
+    font-size: 1.22rem;
+    font-weight: 600;
+    justify-content: center;
+}
+
+mat-nav-list a[mat-list-item] {
+    font-size: 1.08rem;
+    border-radius: 8px;
+    margin: 4px 8px;
+    padding: 8px 12px;
+    color: #232b39;
+    transition: background 0.17s, color 0.17s;
+}
+mat-nav-list a[mat-list-item].active,
+mat-nav-list a[mat-list-item]:hover {
+    background: #1976d211;
+    color: #1976d2;
+    font-weight: 600;
+}
+
+/* Toolbar style */
+mat-sidenav-content mat-toolbar {
+    background: #fff !important;
+    color: #222 !important;
+    box-shadow: 0 2px 8px #1976d11a;
+    border-bottom: 1.5px solid #e3e9ee;
+    min-height: 58px;
+    z-index: 10;
+    position: sticky;
+    top: 0;
+}
+
+/* Dashboard content */
+.dashboard-content {
+    max-width: 900px;
+    margin: 2.8rem auto 0 auto;
+    padding: 2rem 2.5rem 2.2rem 2.5rem;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px #1976d111;
+    min-height: 68vh;
+    transition: box-shadow 0.2s;
+}
+
+/* Responsive tweaks */
+@media (max-width: 1200px) {
+    .dashboard-content {
+        max-width: 98vw;
+        padding: 1.1rem 0.4rem 1.1rem 0.4rem;
+    }
+    mat-sidenav {
+        width: 60vw;
+        min-width: 170px;
+        max-width: 270px;
+    }
+}
+
+/* .spacer for toolbar flex */
+.spacer {
+    flex: 1 1 auto;
+}
+
+.sidebar-friends {
+    margin: 18px 0 0 0;
+    padding: 0 0.7rem;
+}
+.friends-title {
+    font-size: 1.02rem;
+    color: #1976d2;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    margin-left: 0.1rem;
+}
+.friend-chat-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+.friend-email {
+    font-size: 0.98rem;
+    color: #333;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.chat-drawer {
+    width: 380px;
+    min-width: 260px;
+    max-width: 100vw;
+    box-shadow: -2px 0 14px #1976d133;
+    border-left: 1px solid #e3eaf5;
+}

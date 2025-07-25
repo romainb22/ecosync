@@ -1,0 +1,80 @@
+.conso-page {
+    max-width: 1200px;
+    margin: 32px auto 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.main-card {
+    padding: 2.5rem 2rem 2.5rem 2rem;
+}
+
+.header-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.page-title {
+    margin-bottom: 0.1em;
+}
+
+.subtitle {
+    color: #789;
+    margin-bottom: 0.8em;
+}
+
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.3rem;
+}
+
+.btn-row {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.seuil-card {
+    margin: 1.5rem 0;
+    background: #f8fafb;
+    box-shadow: none;
+    padding: 1.5rem 1.2rem 1.2rem 1.2rem;
+}
+
+.chart-container {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.data-card {
+    margin: 1.5rem 0 0 0;
+    padding: 1.5rem;
+}
+
+table {
+    width: 100%;
+}
+
+mat-form-field {
+    min-width: 180px;
+    flex: 1;
+}
+
+mat-chip {
+    font-size: 1.08rem;
+}

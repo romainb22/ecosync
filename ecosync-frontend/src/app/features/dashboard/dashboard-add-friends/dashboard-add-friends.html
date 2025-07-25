@@ -1,0 +1,60 @@
+<div class="friends-add-container">
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Rechercher un utilisateur</mat-label>
+    <input matInput [formControl]="searchControl" placeholder="Entrer un email ou une partie..." #searchInput autocomplete="off">
+  </mat-form-field>
+
+  <div class="friend-requests-box" *ngIf="friendRequests.length > 0">
+    <h3>Demandes d’amis reçues</h3>
+    <mat-list>
+      <mat-list-item *ngFor="let req of friendRequests" class="request-item">
+      <span class="avatar-initial" [ngStyle]="{'background': getAvatarColor(req.sender.email)}">
+        {{ req.sender.email.charAt(0).toUpperCase() }}
+      </span>
+        <span class="friend-email">{{ req.sender.email }}</span>
+        <span class="request-actions">
+        <button mat-stroked-button color="primary" (click)="acceptRequest(req.sender.id)">
+          Accepter
+        </button>
+        <button mat-stroked-button color="warn" (click)="rejectRequest(req.sender.id)">
+          Refuser
+        </button>
+      </span>
+      </mat-list-item>
+    </mat-list>
+  </div>
+
+  <div *ngIf="loading" class="center-spinner">
+    <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+  </div>
+
+  <mat-list>
+    <mat-list-item *ngFor="let user of suggestions">
+    <span matListAvatar class="avatar-initial" [ngStyle]="{'background': getAvatarColor(user.email)}">
+      {{ user.email.charAt(0).toUpperCase() }}
+    </span>
+      <span matLine class="friend-email">{{ user.email }}</span>
+      <span class="friend-actions">
+      <button
+        mat-icon-button
+        color="primary"
+        [disabled]="user.sent || sendingRequestId === user.id"
+        (click)="sendRequest(user.id)"
+        matTooltip="Envoyer une demande d’ami"
+      >
+        <mat-icon *ngIf="!user.sent && sendingRequestId !== user.id">person_add</mat-icon>
+        <mat-progress-spinner
+          *ngIf="sendingRequestId === user.id"
+          mode="indeterminate"
+          diameter="22"
+        ></mat-progress-spinner>
+        <mat-icon *ngIf="user.sent" color="primary">check_circle</mat-icon>
+      </button>
+    </span>
+    </mat-list-item>
+  </mat-list>
+
+  <div *ngIf="!loading && searchControl.value && suggestions.length === 0" class="no-result">
+    <p>Aucun utilisateur trouvé.</p>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<mat-card style="max-width: 400px; margin: 2rem auto; padding: 2rem; text-align: center;">
+  <h3>Importer un fichier CSV</h3>
+  <button mat-stroked-button color="primary" (click)="DownloadSampleCSVImportFile()">
+    Télécharger un exemple
+  </button>
+
+  <div style="margin: 1.5rem 0;">
+    <input type="file" id="fileInput" (change)="onFileSelected($event)" style="display: none;" #fileInput>
+    <button mat-raised-button color="primary" (click)="fileInput.click()">
+      Choisir un fichier
+    </button>
+    <span *ngIf="selectedFile" style="margin-left: 1rem;">
+      {{ selectedFile.name }}
+    </span>
+  </div>
+
+  <button mat-raised-button color="accent"
+          [disabled]="!selectedFile"
+          (click)="uploadFile()">
+    Envoyer
+  </button>
+</mat-card>

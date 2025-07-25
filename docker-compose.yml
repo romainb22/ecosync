@@ -1,0 +1,14 @@
+services:
+  frontend:
+    build: ./ecosync-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+
+  backend:
+    build: ./ecosync-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production

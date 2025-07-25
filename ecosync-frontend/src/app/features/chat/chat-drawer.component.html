@@ -1,0 +1,111 @@
+<div *ngIf="friend; else noFriendSelected">
+  <div class="chat-header">
+    <span>Discussion avec {{ friend.email }}</span>
+    <button mat-icon-button (click)="close.emit()" style="margin-left:auto;">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="chat-messages" #scrollMe>
+    <div *ngFor="let msg of messages" [ngClass]="{'mine': msg.senderId === myId, 'other': msg.senderId !== myId}">
+      <span *ngIf="msg.content" class="bubble">{{ msg.content }}</span>
+      <span *ngIf="msg.fileUrl">
+        <ng-container [ngSwitch]="msg.fileType">
+          <!-- IMAGES, preview + agrandir -->
+          <img *ngSwitchCase="'image/png'" [src]="getFullFileUrl(msg)" style="max-width:120px;max-height:80px;border-radius:4px;cursor:pointer"
+               (click)="openImagePreview(msg)" class="chat-img-thumb">
+          <img *ngSwitchCase="'image/jpeg'" [src]="getFullFileUrl(msg)" style="max-width:120px;max-height:80px;border-radius:4px;cursor:pointer"
+               (click)="openImagePreview(msg)" class="chat-img-thumb">
+          <img *ngSwitchCase="'image/jpg'" [src]="getFullFileUrl(msg)" style="max-width:120px;max-height:80px;border-radius:4px;cursor:pointer"
+               (click)="openImagePreview(msg)" class="chat-img-thumb">
+          <img *ngSwitchCase="'image/gif'" [src]="getFullFileUrl(msg)" style="max-width:120px;max-height:80px;border-radius:4px;cursor:pointer"
+               (click)="openImagePreview(msg)" class="chat-img-thumb">
+
+          <!-- CSV / EXCEL / AUTRES -->
+          <button mat-stroked-button color="primary" *ngSwitchCase="'text/csv'"
+                  (click)="openFilePreview(msg)">
+            <mat-icon>table_chart</mat-icon>
+            CSV
+          </button>
+          <button mat-stroked-button color="accent" *ngSwitchCase="'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'"
+                  (click)="openFilePreview(msg)">
+            <mat-icon>grid_on</mat-icon>
+            Excel
+          </button>
+          <button mat-stroked-button *ngSwitchDefault (click)="openFilePreview(msg)">
+            <mat-icon>attach_file</mat-icon>
+            Fichier
+          </button>
+        </ng-container>
+      </span>
+      <span class="timestamp">{{ msg.createdAt | date:'shortTime' }}</span>
+    </div>
+  </div>
+  <!-- Preview du fichier sélectionné avant envoi -->
+  <div *ngIf="selectedFile" class="file-preview-bar mat-elevation-z1">
+    <ng-container [ngSwitch]="selectedFile.type">
+      <!-- Préview image -->
+      <img *ngSwitchCase="'image/png'" [src]="selectedFilePreviewUrl" class="file-preview-img">
+      <img *ngSwitchCase="'image/jpeg'" [src]="selectedFilePreviewUrl" class="file-preview-img">
+      <img *ngSwitchCase="'image/jpg'" [src]="selectedFilePreviewUrl" class="file-preview-img">
+      <img *ngSwitchCase="'image/gif'" [src]="selectedFilePreviewUrl" class="file-preview-img">
+      <!-- Icône CSV ou autre fichier -->
+      <div *ngSwitchCase="'text/csv'" class="file-preview-icon">
+        <mat-icon color="primary">table_chart</mat-icon> {{ selectedFile.name }}
+      </div>
+      <div *ngSwitchDefault class="file-preview-icon">
+        <mat-icon color="primary">attach_file</mat-icon> {{ selectedFile.name }}
+      </div>
+    </ng-container>
+    <button mat-icon-button color="warn" (click)="clearSelectedFile()" matTooltip="Retirer la pièce jointe">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <form class="chat-input" (ngSubmit)="sendMessage()" autocomplete="off">
+    <mat-form-field class="msg-field">
+      <input matInput [(ngModel)]="message" name="message" placeholder="Écris un message…" autocomplete="off">
+    </mat-form-field>
+    <input type="file" (change)="onFileSelected($event)" [accept]="acceptTypes" style="display:none" #fileInput>
+    <button mat-icon-button color="primary" type="button" (click)="fileInput.click()" matTooltip="Joindre un fichier">
+      <mat-icon>attach_file</mat-icon>
+    </button>
+    <button mat-icon-button color="primary" type="submit">
+      <mat-icon>send</mat-icon>
+    </button>
+  </form>
+
+  <!-- Dialog overlay Material pour preview image/fichier -->
+  <div *ngIf="previewUrl" class="image-preview-modal-overlay">
+    <div class="image-preview-modal-content" (click)="$event.stopPropagation()">
+      <div class="mat-typography" style="padding:1.5rem;max-width:95vw;max-height:90vh;">
+        <ng-container *ngIf="previewType==='image'; else fileBlock">
+          <img [src]="previewUrl" alt="Aperçu image" style="max-width:90vw;max-height:70vh;display:block;margin:auto;border-radius:10px;">
+        </ng-container>
+        <ng-template #fileBlock>
+          <h2 style="margin-bottom:16px;display:flex;align-items:center;">
+            <mat-icon style="vertical-align:middle;margin-right:6px;">description</mat-icon>
+            Aperçu du fichier
+          </h2>
+          <div style="text-align:center;">
+            <mat-icon style="font-size:54px;color:#1976d2;">table_chart</mat-icon>
+            <div>{{ previewFileName }}</div>
+          </div>
+        </ng-template>
+        <div class="preview-actions">
+          <button mat-stroked-button color="primary" (click)="downloadPreviewedImage(); $event.stopPropagation()">
+            <mat-icon>download</mat-icon>
+            Télécharger
+          </button>
+          <button mat-flat-button color="warn" (click)="closeImagePreview(); $event.stopPropagation()">
+            <mat-icon>close</mat-icon>
+            Fermer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #noFriendSelected>
+  <div class="chat-empty">
+    <p>Sélectionne un ami pour démarrer la discussion.</p>
+  </div>
+</ng-template>

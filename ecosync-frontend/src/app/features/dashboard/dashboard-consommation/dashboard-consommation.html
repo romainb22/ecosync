@@ -1,0 +1,146 @@
+<div class="conso-page">
+  <mat-card class="main-card">
+    <div class="header-row">
+      <div>
+        <h2 class="page-title">Consommation</h2>
+        <p class="subtitle">Visualisez et exportez vos données de capteurs.</p>
+      </div>
+      <button mat-stroked-button color="accent" (click)="resetFilters()" style="margin-left:auto;">
+        <mat-icon>refresh</mat-icon> Réinitialiser
+      </button>
+    </div>
+
+    <form (ngSubmit)="loadData()" class="filter-form" autocomplete="off">
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Date de début</mat-label>
+          <input matInput [matDatepicker]="startPicker" [(ngModel)]="startDateOnly" name="startDateOnly">
+          <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Heure de début</mat-label>
+          <input matInput [ngxTimepicker]="startTimePicker" readonly [(ngModel)]="startTime" name="startTime">
+          <ngx-material-timepicker #startTimePicker></ngx-material-timepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Date de fin</mat-label>
+          <input matInput [matDatepicker]="endPicker" [(ngModel)]="endDateOnly" name="endDateOnly">
+          <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Heure de fin</mat-label>
+          <input matInput [ngxTimepicker]="endTimePicker" readonly [(ngModel)]="endTime" name="endTime">
+          <ngx-material-timepicker #endTimePicker></ngx-material-timepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Capteur</mat-label>
+          <mat-select [(ngModel)]="selectedSensor" name="sensor">
+            <mat-option *ngFor="let sensor of sensors" [value]="sensor">{{ sensor }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Type de graphique</mat-label>
+          <mat-select [(ngModel)]="chartType" name="chartType">
+            <mat-option value="line">Courbe (Line)</mat-option>
+            <mat-option value="bar">Histogramme (Bar)</mat-option>
+            <mat-option value="radar">Radar</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Donnée à tracer</mat-label>
+          <mat-select [(ngModel)]="selectedMetric" name="metric">
+            <mat-option value="temperature">Température</mat-option>
+            <mat-option value="humidity">Humidité</mat-option>
+            <mat-option value="co2">CO₂</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="btn-row">
+        <button mat-raised-button color="primary" type="submit">
+          <mat-icon>search</mat-icon> Charger
+        </button>
+        <button mat-raised-button color="accent" type="button" (click)="generateChart()" [disabled]="!selectedSensor">
+          <mat-icon>bar_chart</mat-icon> Générer le graphique
+        </button>
+        <button mat-stroked-button color="primary" type="button" (click)="exportZip()">
+          <mat-icon>download</mat-icon> Exporter (ZIP)
+        </button>
+      </div>
+    </form>
+
+    <mat-card class="seuil-card">
+      <h3>Paramètres de seuil</h3>
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Seuil Température (°C)</mat-label>
+          <input matInput type="number" [(ngModel)]="thresholds.temperature" (ngModelChange)="saveThresholds()" name="thTemp">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Seuil Humidité (%)</mat-label>
+          <input matInput type="number" [(ngModel)]="thresholds.humidity" (ngModelChange)="saveThresholds()" name="thHum">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Seuil CO₂ (ppm)</mat-label>
+          <input matInput type="number" [(ngModel)]="thresholds.co2" (ngModelChange)="saveThresholds()" name="thCo2">
+        </mat-form-field>
+      </div>
+    </mat-card>
+
+    <div *ngIf="chartData.datasets.length" class="chart-container">
+      <canvas #canvas baseChart
+              [data]="chartData"
+              [options]="chartOptions"
+              [type]="chartType">
+      </canvas>
+      <div *ngIf="hasExceededThreshold()" style="margin-top: 1rem;">
+        <mat-chip color="warn" selected>
+          ⚠ Certaines valeurs dépassent le seuil pour {{ metricLabel(selectedMetric) }}
+        </mat-chip>
+      </div>
+    </div>
+  </mat-card>
+
+  <mat-card class="data-card">
+    <h3>Données brutes</h3>
+    <table mat-table [dataSource]="filteredData.length ? filteredData : dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="timestamp">
+        <th mat-header-cell *matHeaderCellDef>Date</th>
+        <td mat-cell *matCellDef="let row">{{ row.timestamp | date:'short' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="sensorName">
+        <th mat-header-cell *matHeaderCellDef>Capteur</th>
+        <td mat-cell *matCellDef="let row">{{ row.sensorName || 'Inconnu' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="temperature">
+        <th mat-header-cell *matHeaderCellDef>Température</th>
+        <td mat-cell *matCellDef="let row">{{ row.temperature }} °C</td>
+      </ng-container>
+
+      <ng-container matColumnDef="humidity">
+        <th mat-header-cell *matHeaderCellDef>Humidité</th>
+        <td mat-cell *matCellDef="let row">{{ row.humidity }} %</td>
+      </ng-container>
+
+      <ng-container matColumnDef="co2">
+        <th mat-header-cell *matHeaderCellDef>CO₂</th>
+        <td mat-cell *matCellDef="let row">{{ row.co2 }} ppm</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </mat-card>
+</div>

@@ -1,0 +1,51 @@
+<div class="register-container">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <h2 class="welcome">Créer un compte EcoSync</h2>
+    <p class="subtitle">Rejoins la communauté et collabore efficacement.</p>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email" autocomplete="username" />
+      <mat-error *ngIf="form.get('email')?.touched && form.get('email')?.invalid">
+        Email invalide ou requis.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Mot de passe</mat-label>
+      <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" autocomplete="new-password" />
+      <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error *ngIf="form.get('password')?.touched && form.get('password')?.invalid">
+        Mot de passe requis (8+ caractères).
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Confirmer le mot de passe</mat-label>
+      <input matInput [type]="hideConfirm ? 'password' : 'text'" formControlName="confirmPassword" autocomplete="new-password" />
+      <button mat-icon-button matSuffix type="button" (click)="hideConfirm = !hideConfirm">
+        <mat-icon>{{ hideConfirm ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error *ngIf="form.get('confirmPassword')?.touched && form.hasError('passwordMismatch')">
+        Les mots de passe ne correspondent pas.
+      </mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || isLoading">
+      <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+      <span *ngIf="!isLoading">Créer un compte</span>
+    </button>
+
+    <div style="text-align:center; margin-top: 1.4rem;">
+      <button mat-stroked-button color="primary" type="button" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        Retour
+      </button>
+    </div>
+
+    <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+    <p class="success-message" *ngIf="successMessage">{{ successMessage }}</p>
+  </form>
+</div>

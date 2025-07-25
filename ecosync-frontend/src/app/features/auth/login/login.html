@@ -1,0 +1,45 @@
+<div class="login-container">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <h2 class="welcome">Bienvenue sur EcoSync 👋</h2>
+    <p class="subtitle" *ngIf="!showPassword">Renseigne ton e-mail pour continuer.</p>
+    <p class="subtitle" *ngIf="showPassword">
+      <strong>Bon retour parmi nous, <span class="user-mail">{{ form.get('email')?.value }}</span> !</strong>
+    </p>
+
+    <mat-form-field appearance="fill" class="full-width" *ngIf="!showPassword">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email" autocomplete="username" />
+      <mat-error *ngIf="form.get('email')?.touched && form.get('email')?.invalid">
+        Email requis ou invalide.
+      </mat-error>
+    </mat-form-field>
+
+    <ng-container *ngIf="showPassword">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Mot de passe</mat-label>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" autocomplete="current-password" />
+        <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error *ngIf="form.get('password')?.touched && form.get('password')?.invalid">
+          Mot de passe requis.
+        </mat-error>
+      </mat-form-field>
+      <button mat-stroked-button type="button" (click)="resetStep()" style="margin-bottom:16px">
+        <mat-icon>arrow_back</mat-icon>
+        Changer d'email
+      </button>
+    </ng-container>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="(showPassword && form.get('password')?.invalid) || isLoading || (!showPassword && form.get('email')?.invalid)">
+      <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+      <span *ngIf="!isLoading">{{ showPassword ? 'Connexion' : 'Accéder' }}</span>
+    </button>
+
+    <p *ngIf="showPassword" class="forgot">
+      <a (click)="forgotPassword()" href="javascript:void(0)">Mot de passe oublié ?</a>
+    </p>
+
+    <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </form>
+</div>

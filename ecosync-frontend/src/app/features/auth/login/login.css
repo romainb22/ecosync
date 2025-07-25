@@ -1,0 +1,69 @@
+.login-container {
+    max-width: 410px;
+    margin: 80px auto 0 auto;
+    padding: 2.5rem 2rem 2rem 2rem;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 36px #1976d233, 0 1.5px 8px #1976d218;
+    display: flex;
+    flex-direction: column;
+    animation: popin .38s cubic-bezier(.33,1.1,.6,1.02);
+}
+
+@keyframes popin {
+    0% { transform: scale(.98) translateY(32px); opacity: 0; }
+    80% { opacity: 1; }
+    100% { transform: none; opacity: 1; }
+}
+
+.login-container h2 {
+    margin-bottom: 1.5rem;
+    color: #1976d2;
+    font-weight: 700;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.full-width {
+    width: 100%;
+    margin-bottom: 1.25rem;
+}
+
+button[mat-raised-button], button[mat-stroked-button], button[mat-flat-button] {
+    width: 100%;
+    margin-top: 0.2rem;
+    letter-spacing: 0.2px;
+}
+
+.error-message {
+    color: #e53935;
+    background: #fff8f8;
+    border-radius: 6px;
+    padding: 0.4em 0.5em;
+    text-align: center;
+    margin-top: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.1px;
+}
+
+a {
+    color: #1976d2;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color .18s;
+}
+a:hover {
+    text-decoration: underline;
+    color: #0d47a1;
+}
+
+@media (max-width: 600px) {
+    .login-container {
+        max-width: 97vw;
+        margin: 32px 2vw;
+        padding: 2rem 0.7rem 1.5rem 0.7rem;
+    }
+    .login-container h2 {
+        font-size: 1.3rem;
+    }
+}

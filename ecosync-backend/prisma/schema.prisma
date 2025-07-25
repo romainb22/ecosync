@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Measurement {
+  id          Int      @id @default(autoincrement())
+  timestamp   DateTime @default(now())
+  temperature Float
+  humidity    Int
+  co2         Int
+  sensorName  String
+}
+
+
+model User {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now())
+
+  sentFriendRequests     Friendship[] @relation("SentFriendRequests")
+  receivedFriendRequests Friendship[] @relation("ReceivedFriendRequests")
+
+  sentMessages     Message[] @relation("Sender")
+  receivedMessages Message[] @relation("Receiver")
+}
+
+model Friendship {
+  id         Int      @id @default(autoincrement())
+  sender     User     @relation("SentFriendRequests", fields: [senderId], references: [id])
+  senderId   Int
+  receiver   User     @relation("ReceivedFriendRequests", fields: [receiverId], references: [id])
+  receiverId Int
+  status     FriendshipStatus @default(PENDING)
+  createdAt  DateTime @default(now())
+
+  @@unique([senderId, receiverId])
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  BLOCKED
+}
+
+model Message {
+  id          Int      @id @default(autoincrement())
+  senderId    Int
+  receiverId  Int
+  content     String?
+  fileUrl     String?      // Pour le lien du fichier
+  fileType    String?      // Pour savoir si c’est image/csv/autre
+  createdAt   DateTime @default(now())
+  isRead      Boolean  @default(false)
+  sender      User     @relation("Sender", fields: [senderId], references: [id])
+  receiver    User     @relation("Receiver", fields: [receiverId], references: [id])
+}
+

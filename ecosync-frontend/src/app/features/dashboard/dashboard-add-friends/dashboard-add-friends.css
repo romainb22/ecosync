@@ -1,0 +1,131 @@
+/* --------- Container principal --------- */
+.friends-add-container {
+    max-width: 520px;
+    margin: 2.5rem auto 0 auto;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px #1976d108;
+    padding: 2rem 1.7rem 2.2rem 1.7rem;
+}
+
+/* --------- Champ de recherche --------- */
+.search-field {
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+/* --------- Liste d'amis --------- */
+.friends-list {
+    margin-top: 0.5rem;
+}
+
+/* --------- Ligne ami --------- */
+.friend-item {
+    display: flex !important;
+    align-items: center !important;
+    flex-direction: row;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    padding: 10px 8px 10px 0;
+    background: none !important;
+    transition: background 0.18s;
+}
+.friend-item:hover {
+    background: #f4f9ff !important;
+}
+
+/* --------- Avatar --------- */
+.avatar-initial {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1976d2 70%, #64b5f6 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.28rem;
+    font-weight: 600;
+    margin-right: 14px;
+    box-shadow: 0 2px 8px #1976d111;
+    flex-shrink: 0;
+    user-select: none;
+    border: 2px solid #fff;
+}
+
+/* --------- Infos --------- */
+.friend-info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+.friend-email {
+    font-size: 1.07rem;
+    font-weight: 500;
+    color: #232b39;
+    letter-spacing: 0.02em;
+    margin-bottom: 2px;
+}
+
+/* --------- Bouton --------- */
+.add-friend-btn {
+    margin-left: auto;
+    margin-right: 2px;
+    transition: filter 0.2s;
+}
+.add-friend-btn:disabled {
+    filter: grayscale(0.9) opacity(0.75);
+}
+
+/* --------- Message aucun résultat --------- */
+.no-result {
+    margin-top: 2rem;
+    text-align: center;
+    color: #888;
+    font-style: italic;
+}
+
+/* --------- Liste Angular Material générale --------- */
+.mat-list-item {
+    align-items: center !important;
+    border-radius: 16px;
+    margin-bottom: 8px;
+    transition: background 0.15s;
+}
+.mat-list-item:hover {
+    background: #e3f2fd60;
+}
+
+.avatar-initial[matListAvatar] {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1976d2 70%, #64b5f6 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.28rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px #1976d111;
+    flex-shrink: 0;
+    user-select: none;
+    border: 2px solid #fff;
+}
+
+.friend-email[matLine] {
+    font-size: 1.12rem;
+    font-weight: 500;
+    color: #232b39;
+    letter-spacing: 0.01em;
+    margin-left: 6px;
+    flex: 1 1 auto;
+    word-break: break-all;
+}
+
+.friend-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}

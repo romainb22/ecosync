@@ -1,0 +1,36 @@
+<mat-accordion>
+  <mat-expansion-panel *ngFor="let session of sessions" [expanded]="selectedSession === session" (opened)="panelOpened(session)">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ session.sensor }} – {{ metricLabel(session.metric) }}
+      </mat-panel-title>
+      <mat-panel-description>
+        {{ session.from | date:'short' }} → {{ session.to | date:'short' }}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <div style="margin-bottom: 1rem;">
+      <strong>Type :</strong> {{ session.chartType }}
+    </div>
+
+    <div *ngIf="selectedSession === session && chartData?.datasets?.length">
+      <canvas #historyCanvas
+              baseChart
+              [data]="chartData"
+              [options]="chartOptions"
+              [type]="session.chartType || 'line'"
+              style="display: block; max-width: 100%; max-height: 400px;">
+      </canvas>
+
+      <button mat-stroked-button color="primary"
+              type="button"
+              (click)="exportZip()">
+        Exporter en ZIP (graphique + données)
+      </button>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<div style="margin-top: 1rem;">
+  <button mat-button color="warn" (click)="clearHistory()">Vider l’historique</button>
+</div>
