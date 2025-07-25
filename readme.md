@@ -20,7 +20,6 @@ Fonctionnalités principales :
 <pre lang="markdown">
 ## 🗂️ Architecture du projet
 
-```text
 ecosync/
 │
 ├── backend/                  # Node.js + Express + Prisma
@@ -45,8 +44,6 @@ ecosync/
 ├── README.md                 # Documentation globale
 └── ...
 </pre>
-
-yaml
 
 ---
 
@@ -119,7 +116,6 @@ API RESTful : Tout le backend exposé, documenté via Swagger
 
 🐳 Docker/Déploiement
 Fichier docker-compose.yml exemple
-yaml
 
 version: "3.9"
 
